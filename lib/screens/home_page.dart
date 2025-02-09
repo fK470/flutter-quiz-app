@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/screens/quiz_page.dart';
+import 'package:quiz_app/screens/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,6 +20,20 @@ class _HomePageState extends State<HomePage> {
     var theme = Theme.of(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Quiz App'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: SizedBox(
           width: 200,

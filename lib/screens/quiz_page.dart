@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/db_helper.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({Key? key}) : super(key: key);
+  const QuizPage({super.key});
 
   @override
   QuizPageState createState() => QuizPageState();
@@ -64,50 +64,51 @@ class QuizPageState extends State<QuizPage> {
       );
     }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('4択クイズ'),
-      ),
-      body: _quizCompleted
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('クイズ完了！ 得点は $_score / ${_quizData.length}'),
-                  ElevatedButton(
-                    onPressed: _resetQuiz,
-                    child: const Text('もう一度挑戦する'),
-                  ),
-                ],
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _quizData[_currentQuestionIndex]['question'],
-                    style: const TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  ...[
-                    _quizData[_currentQuestionIndex]['option1'],
-                    _quizData[_currentQuestionIndex]['option2'],
-                    _quizData[_currentQuestionIndex]['option3'],
-                    _quizData[_currentQuestionIndex]['option4'],
+        appBar: AppBar(
+          title: const Text('4択クイズ'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _quizCompleted
+                ? [
+                    Text('クイズ終了！ 得点は $_score / ${_quizData.length}'),
+                    ElevatedButton(
+                      onPressed: _resetQuiz,
+                      child: const Text('もう一度挑戦する'),
+                    ),
                   ]
-                      .map((option) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ElevatedButton(
-                              onPressed: () => _answerQuestion(option),
-                              child: Text(option),
-                            ),
-                          ))
-                      .toList(),
-                ],
-              ),
-            ),
-    );
+                : [
+                    // クイズの進行状況を表示
+                    Text(
+                      '${_currentQuestionIndex + 1} / ${_quizData.length}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+
+                    // クイズの問題文を表示
+                    Text(
+                      _quizData[_currentQuestionIndex]['question'],
+                      style: const TextStyle(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    // 回答ボタンを表示
+                    ...[
+                      _quizData[_currentQuestionIndex]['option1'],
+                      _quizData[_currentQuestionIndex]['option2'],
+                      _quizData[_currentQuestionIndex]['option3'],
+                      _quizData[_currentQuestionIndex]['option4'],
+                    ].map((option) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ElevatedButton(
+                            onPressed: () => _answerQuestion(option),
+                            child: Text(option),
+                          ),
+                        )),
+                  ],
+          ),
+        ));
   }
 }

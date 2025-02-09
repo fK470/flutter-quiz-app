@@ -1,0 +1,26 @@
+[
+  {
+    "question": "Flutterの開発元は？",
+    "option1": "Google",
+    "option2": "Facebook",
+    "option3": "Apple",
+    "option4": "Microsoft",
+    "answer": "option1"
+  },
+  {
+    "question": "Dart言語の主な用途は何ですか？",
+    "option1": "ウェブ開発",
+    "option2": "ゲーム開発",
+    "option3": "モバイルアプリ開発",
+    "option4": "データ分析",
+    "answer": "option3"
+  },
+  {
+    "question": "Flutterで使用されるプログラミング言語は何ですか？",
+    "option1": "Java",
+    "option2": "Kotlin",
+    "option3": "Swift",
+    "option4": "Dart",
+    "answer": "option4"
+  }
+]

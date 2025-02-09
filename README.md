@@ -10,6 +10,8 @@ A simple quiz application built with Flutter.
 - Score tracking
 - Timer for each question
 
+クイズを更新したいときはinitQuizData.jsonを編集して、アプリからDBリセットをする。
+
 ## Installation
 
 1. Clone the repository:
