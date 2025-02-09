@@ -39,8 +39,8 @@ class DatabaseHelper {
   ///
   /// 2. [_insertInitialData] テーブルにデフォルトのクイズデータを挿入
   ///
-  /// @param db テーブル作成が実行されるデータベースインスタンス。
-  /// @param version データベーススキーマのバージョン番号。
+  /// @param db DBインスタンス。
+  /// @param version スキーマバージョン
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE quiz(
@@ -65,7 +65,7 @@ class DatabaseHelper {
   /// 3. 各クイズエントリを反復し、問題、選択肢、および回答を含むマップを構築します。
   /// 4. 生成された各クイズエントリを、指定されたデータベースの 'quiz' テーブルに挿入します。
   ///
-  /// @param db クイズデータを挿入する対象のデータベースインスタンス。
+  /// @param db DBインスタンス。
   Future<void> _insertInitialData(Database db) async {
     final String jsonString =
         await rootBundle.loadString('lib/initQuizData.json');
@@ -78,7 +78,7 @@ class DatabaseHelper {
         'option2': data['option2'],
         'option3': data['option3'],
         'option4': data['option4'],
-        'answer': data[data['answer']]
+        'answer': data[data['answer']] // answerは正解選択肢のキーを持っている(option1など)
       };
       await db.insert('quiz', quizEntry);
     }
@@ -96,11 +96,14 @@ class DatabaseHelper {
 
   /// データベースをリセット
   ///
+  /// 設定画面から実行する
+  /// クイズデータJSONを編集してもキャッシュが残るので、それを削除するために使用
+  ///
   /// 1. [getApplicationDocumentsDirectory] を使用してアプリケーションのドキュメントディレクトリを取得
-  /// 2. ドキュメントディレクトリのパスと 'quiz_database.db' を結合し、データベースファイルの完全なパスを構築します。
-  /// 3. [deleteDatabase]を使用して、構築されたパス上のデータベースを削除します。
-  /// 4. メモリ内のデータベース参照[_database]を null に設定します。
-  /// 5. database getter を await して、データベースを再初期化し、新しいインスタンスを確保します。
+  /// 2. ドキュメントディレクトリのパスと 'quiz_database.db' を結合し、データベースファイルの完全なパスを構築
+  /// 3. sqfliteの[deleteDatabase]メソッドでデータベースを削除
+  /// 4. DBキャッシュを削除
+  /// 5. getterで新しいインスタンスを確保
   Future<void> resetDatabase() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'quiz_database.db');
